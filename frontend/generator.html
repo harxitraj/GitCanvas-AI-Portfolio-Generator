@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generating your portfolio — GitCanvas</title>
+    <meta name="description" content="GitCanvas is analyzing your GitHub profile and building your developer portfolio.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="generator.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23191919'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='18' fill='white'>G</text></svg>">
+</head>
+<body>
+
+    <header class="gen-header">
+        <a href="index.html" class="gen-logo" id="gen-logo">
+            <span class="logo-mark">G</span>
+            <span class="logo-text">GitCanvas</span>
+        </a>
+    </header>
+
+    <main class="gen-main" id="gen-main">
+        <!-- Loading State -->
+        <div class="gen-loading" id="gen-loading">
+            <div class="gen-avatar-area">
+                <div class="gen-avatar-ring">
+                    <div class="gen-avatar" id="gen-avatar"></div>
+                </div>
+                <p class="gen-username" id="gen-username-display">@username</p>
+            </div>
+
+            <div class="gen-steps" id="gen-steps">
+                <div class="gen-step" data-step="1">
+                    <div class="step-indicator">
+                        <div class="step-dot"></div>
+                        <div class="step-line"></div>
+                    </div>
+                    <span class="step-text">Fetching GitHub profile…</span>
+                </div>
+                <div class="gen-step" data-step="2">
+                    <div class="step-indicator">
+                        <div class="step-dot"></div>
+                        <div class="step-line"></div>
+                    </div>
+                    <span class="step-text">Analyzing repositories…</span>
+                </div>
+                <div class="gen-step" data-step="3">
+                    <div class="step-indicator">
+                        <div class="step-dot"></div>
+                        <div class="step-line"></div>
+                    </div>
+                    <span class="step-text">Detecting top languages…</span>
+                </div>
+                <div class="gen-step" data-step="4">
+                    <div class="step-indicator">
+                        <div class="step-dot"></div>
+                        <div class="step-line"></div>
+                    </div>
+                    <span class="step-text">Generating portfolio with AI…</span>
+                </div>
+                <div class="gen-step" data-step="5">
+                    <div class="step-indicator">
+                        <div class="step-dot"></div>
+                    </div>
+                    <span class="step-text">Almost ready…</span>
+                </div>
+            </div>
+
+            <p class="gen-subtitle" id="gen-subtitle">This usually takes 15–30 seconds</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="gen-error" id="gen-error" style="display: none;">
+            <div class="error-icon">!</div>
+            <h2 class="error-title" id="error-title">Something went wrong</h2>
+            <p class="error-message" id="error-message">We couldn't generate your portfolio.</p>
+            <div class="error-actions">
+                <button class="error-retry" id="error-retry">Try again</button>
+                <a href="index.html" class="error-back">Back to home</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="generator.js"></script>
+</body>
+</html>

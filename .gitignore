@@ -1,0 +1,47 @@
+# ===========================
+#  GitCanvas — .gitignore
+# ===========================
+
+# --- Java / Maven ---
+backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Spring Boot ---
+backend/src/main/resources/application-local.properties
+
+# --- IDE ---
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.code-workspace
+.project
+.classpath
+.settings/
+*.swp
+*.swo
+*~
+.factorypath
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# --- Node (in case any tooling is added later) ---
+node_modules/
+package-lock.json
+
+# --- Environment / Secrets ---
+.env
+*.env.local
+
+# --- Misc ---
+*.log
+*.tmp
+*.bak

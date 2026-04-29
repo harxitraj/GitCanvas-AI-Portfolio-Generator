@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Preview — GitCanvas</title>
+    <meta name="description" content="Preview your AI-generated developer portfolio.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="portfolio.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23191919'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='18' fill='white'>G</text></svg>">
+</head>
+<body>
+
+    <!-- Top Toolbar -->
+    <header class="pf-toolbar" id="pf-toolbar">
+        <div class="toolbar-left">
+            <a href="index.html" class="toolbar-back" id="toolbar-back" title="Back to home">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <div class="toolbar-info">
+                <span class="toolbar-label">Portfolio for</span>
+                <span class="toolbar-username" id="toolbar-username">@username</span>
+            </div>
+        </div>
+        <div class="toolbar-right">
+            <button class="toolbar-btn" id="btn-regenerate" title="Regenerate portfolio">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                </svg>
+                <span>Regenerate</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Browser Chrome Frame -->
+    <main class="pf-main" id="pf-main">
+        <div class="browser-frame" id="browser-frame">
+            <div class="browser-topbar">
+                <div class="browser-dots">
+                    <span class="bdot bdot-red"></span>
+                    <span class="bdot bdot-yellow"></span>
+                    <span class="bdot bdot-green"></span>
+                </div>
+                <div class="browser-address">
+                    <span class="addr-lock">🔒</span>
+                    <span class="addr-text" id="addr-text">localhost:8080/api/portfolio/preview/...</span>
+                </div>
+            </div>
+            <div class="browser-viewport">
+                <iframe id="portfolio-iframe" class="portfolio-iframe" sandbox="allow-scripts allow-same-origin" title="Portfolio preview"></iframe>
+                <!-- Loading overlay -->
+                <div class="iframe-loading" id="iframe-loading">
+                    <div class="iframe-spinner"></div>
+                    <p>Loading preview…</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="portfolio.js"></script>
+</body>
+</html>

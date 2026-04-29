@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitCanvas — Build your developer portfolio in seconds</title>
+    <meta name="description" content="GitCanvas turns your GitHub activity into a polished developer portfolio. Enter your username, get a deployable site.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23191919'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='18' fill='white'>G</text></svg>">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo" id="logo">
+                <span class="logo-mark">G</span>
+                <span class="logo-text">GitCanvas</span>
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <a href="#how-it-works" class="nav-link">How it works</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#preview" class="nav-link">Preview</a>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+        <nav class="mobile-nav-links">
+            <a href="#how-it-works" class="mobile-nav-link">How it works</a>
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#preview" class="mobile-nav-link">Preview</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <p class="hero-overline">For developers who'd rather ship code than design portfolios</p>
+                <h1 class="hero-title">
+                    Your GitHub.<br>
+                    <em>Your story.</em><br>
+                    One portfolio.
+                </h1>
+                <p class="hero-subtitle">
+                    GitCanvas reads your repositories, contributions, and coding patterns — 
+                    then crafts a portfolio site you'll actually want to share.
+                </p>
+                <div class="hero-input-group" id="hero-input-group">
+                    <div class="input-wrapper">
+                        <span class="input-prefix">github.com/</span>
+                        <input 
+                            type="text" 
+                            id="github-username" 
+                            class="hero-input" 
+                            placeholder="username" 
+                            autocomplete="off"
+                            spellcheck="false"
+                            maxlength="39"
+                        >
+                    </div>
+                    <button class="hero-cta" id="generate-btn" type="button">
+                        Build my portfolio
+                    </button>
+                </div>
+                <p class="hero-hint">No sign-up needed. Takes about 30 seconds.</p>
+            </div>
+            <div class="hero-right">
+                <div class="hero-visual">
+                    <div class="portfolio-card card-1">
+                        <div class="card-avatar"></div>
+                        <div class="card-lines">
+                            <div class="card-line w70"></div>
+                            <div class="card-line w50"></div>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge cb-1">Python</span>
+                            <span class="card-badge cb-2">TypeScript</span>
+                            <span class="card-badge cb-3">Go</span>
+                        </div>
+                        <div class="card-chart">
+                            <div class="chart-bar" style="--h: 40%"></div>
+                            <div class="chart-bar" style="--h: 65%"></div>
+                            <div class="chart-bar" style="--h: 85%"></div>
+                            <div class="chart-bar" style="--h: 55%"></div>
+                            <div class="chart-bar" style="--h: 70%"></div>
+                            <div class="chart-bar" style="--h: 90%"></div>
+                            <div class="chart-bar" style="--h: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-card card-2">
+                        <div class="card-project">
+                            <div class="card-line w60"></div>
+                            <div class="card-line w80 light"></div>
+                            <div class="card-stats-row">
+                                <span class="stat-pill">&#9733; 128</span>
+                                <span class="stat-pill">&#8693; 34</span>
+                            </div>
+                        </div>
+                        <div class="card-project">
+                            <div class="card-line w50"></div>
+                            <div class="card-line w70 light"></div>
+                            <div class="card-stats-row">
+                                <span class="stat-pill">&#9733; 87</span>
+                                <span class="stat-pill">&#8693; 12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Strip -->
+    <section class="proof-strip" id="proof-strip">
+        <div class="proof-inner">
+            <div class="proof-stat">
+                <span class="proof-number" data-target="2400">0</span>
+                <span class="proof-label">portfolios generated</span>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <span class="proof-number" data-target="30" data-suffix="s">0s</span>
+                <span class="proof-label">average build time</span>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <span class="proof-number" data-target="3">0</span>
+                <span class="proof-label">themes included</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Three steps.<br>Zero design skills needed.</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Enter your username</h3>
+                        <p class="step-desc">Just your GitHub handle. We pull everything public — repos, languages, contribution history, stars, the whole picture.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3 class="step-title">We analyze &amp; generate</h3>
+                        <p class="step-desc">Our backend scores your repositories, detects your strongest languages, and uses AI to write a professional bio that actually sounds like you.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Preview, tweak, deploy</h3>
+                        <p class="step-desc">Pick a theme, edit your bio, select featured projects. Then deploy to Vercel with one click or download as a ZIP. Done.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">What you get</h2>
+                <p class="section-subtitle">Everything a developer portfolio needs, auto-generated from your actual work.</p>
+            </div>
+            <div class="features-layout">
+                <div class="feature-block feature-large">
+                    <div class="feature-large-inner">
+                        <div class="feature-large-text">
+                            <div class="feature-tag">Core</div>
+                            <h3 class="feature-title">Deep GitHub analysis</h3>
+                            <p class="feature-desc">
+                                We don't just list your repos. We aggregate language distribution, 
+                                score each project by stars, forks, and recency, track monthly commit 
+                                patterns, and identify your top 5 showcase-worthy projects.
+                            </p>
+                        </div>
+                        <div class="feature-visual analysis-visual">
+                            <div class="lang-bars">
+                                <div class="lang-bar">
+                                    <span class="lang-name">TypeScript</span>
+                                    <div class="lang-track"><div class="lang-fill" style="--w: 78%"></div></div>
+                                </div>
+                                <div class="lang-bar">
+                                    <span class="lang-name">Python</span>
+                                    <div class="lang-track"><div class="lang-fill" style="--w: 62%"></div></div>
+                                </div>
+                                <div class="lang-bar">
+                                    <span class="lang-name">Go</span>
+                                    <div class="lang-track"><div class="lang-fill" style="--w: 41%"></div></div>
+                                </div>
+                                <div class="lang-bar">
+                                    <span class="lang-name">Rust</span>
+                                    <div class="lang-track"><div class="lang-fill" style="--w: 25%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-tag">AI</div>
+                    <h3 class="feature-title">Professional bio, written for you</h3>
+                    <p class="feature-desc">
+                        Based on your coding patterns and project types, we generate 
+                        a bio that reads like a human wrote it. Edit it freely.
+                    </p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-tag">Themes</div>
+                    <h3 class="feature-title">Three distinct looks</h3>
+                    <p class="feature-desc">
+                        Minimal, Modern Startup, or Dark Hacker. Switch instantly. 
+                        Each theme changes typography, colors, and layout feel.
+                    </p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-tag">Charts</div>
+                    <h3 class="feature-title">Data visualizations built-in</h3>
+                    <p class="feature-desc">
+                        Language distribution doughnuts, monthly commit bars, 
+                        GitHub-style contribution grids. All responsive, all themed.
+                    </p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-tag">Deploy</div>
+                    <h3 class="feature-title">One-click Vercel deployment</h3>
+                    <p class="feature-desc">
+                        Click deploy, get a live URL in under 10 seconds. 
+                        No Vercel account needed on your end. Share it anywhere.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview Section -->
+    <section class="preview" id="preview">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">See a real output</h2>
+                <p class="section-subtitle">This is what a generated portfolio actually looks like. Not a mockup.</p>
+            </div>
+            <div class="preview-browser">
+                <div class="browser-bar">
+                    <div class="browser-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <div class="browser-url">
+                        <span>https://</span>sarahdev-portfolio.vercel.app
+                    </div>
+                </div>
+                <div class="browser-content">
+                    <div class="mock-portfolio">
+                        <div class="mock-hero-section">
+                            <div class="mock-avatar"></div>
+                            <div class="mock-name-line"></div>
+                            <div class="mock-tagline-line"></div>
+                            <div class="mock-badge-row">
+                                <span class="mock-badge mb-1"></span>
+                                <span class="mock-badge mb-2"></span>
+                                <span class="mock-badge mb-3"></span>
+                                <span class="mock-badge mb-4"></span>
+                            </div>
+                        </div>
+                        <div class="mock-stats">
+                            <div class="mock-stat-box"></div>
+                            <div class="mock-stat-box"></div>
+                            <div class="mock-stat-box"></div>
+                            <div class="mock-stat-box"></div>
+                        </div>
+                        <div class="mock-projects">
+                            <div class="mock-project-card">
+                                <div class="mock-line w60"></div>
+                                <div class="mock-line w90 thin"></div>
+                                <div class="mock-line w75 thin"></div>
+                            </div>
+                            <div class="mock-project-card">
+                                <div class="mock-line w50"></div>
+                                <div class="mock-line w85 thin"></div>
+                                <div class="mock-line w65 thin"></div>
+                            </div>
+                            <div class="mock-project-card">
+                                <div class="mock-line w70"></div>
+                                <div class="mock-line w80 thin"></div>
+                                <div class="mock-line w55 thin"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-switch-demo">
+                <span class="theme-label">Theme preview:</span>
+                <button class="theme-btn active" data-theme="minimal">Minimal</button>
+                <button class="theme-btn" data-theme="modern">Modern</button>
+                <button class="theme-btn" data-theme="hacker">Dark Hacker</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="bottom-cta" id="bottom-cta">
+        <div class="section-container">
+            <h2 class="cta-title">Ready?</h2>
+            <p class="cta-subtitle">Enter your GitHub username and see what we build for you.</p>
+            <div class="cta-input-group">
+                <div class="input-wrapper">
+                    <span class="input-prefix">github.com/</span>
+                    <input 
+                        type="text" 
+                        id="github-username-bottom" 
+                        class="hero-input" 
+                        placeholder="username" 
+                        autocomplete="off"
+                        spellcheck="false"
+                        maxlength="39"
+                    >
+                </div>
+                <button class="hero-cta" id="generate-btn-bottom" type="button">
+                    Build my portfolio
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">GitCanvas</span>
+                <p class="footer-copy">Open-source portfolio generator for developers.</p>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+                <a href="#features" class="footer-link">Features</a>
+                <a href="#how-it-works" class="footer-link">How it works</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
