@@ -90,4 +90,68 @@ public class PortfolioController {
                 .header(HttpHeaders.CACHE_CONTROL, "no-cache")
                 .body(content);
     }
+
+    /**
+     * Returns all three portfolio files as JSON for the code editor.
+     *
+     * The editor needs the raw file contents to populate Monaco models.
+     * We return them as a single JSON object rather than three separate
+     * requests to minimize latency when opening the editor.
+     */
+    @GetMapping("/files/{username}")
+    public ResponseEntity<?> getPortfolioFiles(@PathVariable String username) {
+        var files = portfolioService.getPortfolioFiles(username);
+
+        if (files == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "html", files.getHtml(),
+                "css", files.getCss(),
+                "js", files.getJs()
+        ));
+    }
+
+    /**
+     * Updates the stored portfolio files with user-edited content.
+     *
+     * Called when the user clicks "Finalize Changes" in the code editor.
+     * Expects a JSON body with "html", "css", and "js" keys.
+     *
+     * After this call, the preview endpoint will serve the updated files,
+     * so the frontend just needs to reload the iframe.
+     */
+    @PutMapping("/update/{username}")
+    public ResponseEntity<?> updatePortfolioFiles(
+            @PathVariable String username,
+            @RequestBody Map<String, String> body) {
+
+        String html = body.get("html");
+        String css = body.get("css");
+        String js = body.get("js");
+
+        if (html == null || css == null || js == null) {
+            return ResponseEntity.badRequest().body(
+                    Map.of("error", "All three files (html, css, js) are required"));
+        }
+
+        try {
+            var updatedFiles = new com.gitcanvas.model.PortfolioFiles(html, css, js);
+            portfolioService.updatePortfolioFiles(username, updatedFiles);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Portfolio updated successfully"
+            ));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(
+                    Map.of("error", e.getMessage()));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    Map.of("error", "Failed to update portfolio: " + e.getMessage()));
+        }
+    }
 }

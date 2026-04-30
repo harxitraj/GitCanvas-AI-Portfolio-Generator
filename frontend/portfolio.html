@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Preview — GitCanvas</title>
-    <meta name="description" content="Preview your AI-generated developer portfolio.">
+    <meta name="description" content="Preview, edit, and download your AI-generated developer portfolio.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="portfolio.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23191919'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='18' fill='white'>G</text></svg>">
+
+    <!-- JSZip for client-side ZIP generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -27,6 +30,21 @@
             </div>
         </div>
         <div class="toolbar-right">
+            <button class="toolbar-btn" id="btn-view-code" title="View and edit the source code">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>View Code</span>
+            </button>
+            <button class="toolbar-btn" id="btn-download-zip" title="Download portfolio as ZIP">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download ZIP</span>
+            </button>
             <button class="toolbar-btn" id="btn-regenerate" title="Regenerate portfolio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
@@ -36,30 +54,141 @@
         </div>
     </header>
 
-    <!-- Browser Chrome Frame -->
+    <!-- Main Content Area -->
     <main class="pf-main" id="pf-main">
-        <div class="browser-frame" id="browser-frame">
-            <div class="browser-topbar">
-                <div class="browser-dots">
-                    <span class="bdot bdot-red"></span>
-                    <span class="bdot bdot-yellow"></span>
-                    <span class="bdot bdot-green"></span>
+
+        <!-- Preview-Only View (default) -->
+        <div class="preview-container" id="preview-container">
+            <div class="browser-frame" id="browser-frame">
+                <div class="browser-topbar">
+                    <div class="browser-dots">
+                        <span class="bdot bdot-red"></span>
+                        <span class="bdot bdot-yellow"></span>
+                        <span class="bdot bdot-green"></span>
+                    </div>
+                    <div class="browser-address">
+                        <span class="addr-lock">🔒</span>
+                        <span class="addr-text" id="addr-text">localhost:8080/api/portfolio/preview/...</span>
+                    </div>
                 </div>
-                <div class="browser-address">
-                    <span class="addr-lock">🔒</span>
-                    <span class="addr-text" id="addr-text">localhost:8080/api/portfolio/preview/...</span>
+                <div class="browser-viewport">
+                    <iframe id="portfolio-iframe" class="portfolio-iframe" sandbox="allow-scripts allow-same-origin" title="Portfolio preview"></iframe>
+                    <!-- Loading overlay -->
+                    <div class="iframe-loading" id="iframe-loading">
+                        <div class="iframe-spinner"></div>
+                        <p>Loading preview…</p>
+                    </div>
                 </div>
             </div>
-            <div class="browser-viewport">
-                <iframe id="portfolio-iframe" class="portfolio-iframe" sandbox="allow-scripts allow-same-origin" title="Portfolio preview"></iframe>
-                <!-- Loading overlay -->
-                <div class="iframe-loading" id="iframe-loading">
-                    <div class="iframe-spinner"></div>
-                    <p>Loading preview…</p>
+        </div>
+
+        <!-- Split-Pane Editor View (hidden by default) -->
+        <div class="split-pane" id="split-pane" style="display: none;">
+
+            <!-- Left: Code Editor Panel -->
+            <div class="editor-pane" id="editor-pane">
+                <!-- File Tabs -->
+                <div class="file-tabs" id="file-tabs">
+                    <button class="file-tab active" data-file="html" id="tab-html">
+                        <span class="tab-icon">&#60;/&#62;</span>
+                        <span class="tab-name">index.html</span>
+                    </button>
+                    <button class="file-tab" data-file="css" id="tab-css">
+                        <span class="tab-icon">#</span>
+                        <span class="tab-name">style.css</span>
+                    </button>
+                    <button class="file-tab" data-file="js" id="tab-js">
+                        <span class="tab-icon">{ }</span>
+                        <span class="tab-name">script.js</span>
+                    </button>
+                </div>
+
+                <!-- Monaco Editor Container -->
+                <div class="editor-container" id="editor-container">
+                    <!-- Editor loading state -->
+                    <div class="editor-loading" id="editor-loading">
+                        <div class="editor-loading-spinner"></div>
+                        <p>Loading editor…</p>
+                    </div>
+                </div>
+
+                <!-- Editor Footer with Actions -->
+                <div class="editor-footer" id="editor-footer">
+                    <div class="editor-footer-left">
+                        <button class="editor-btn btn-back-preview" id="btn-back-preview">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            Back to Preview
+                        </button>
+                    </div>
+                    <div class="editor-footer-right">
+                        <button class="editor-btn btn-discard" id="btn-discard" disabled>
+                            Discard Changes
+                        </button>
+                        <button class="editor-btn btn-finalize" id="btn-finalize" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Finalize Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview Panel -->
+            <div class="preview-pane" id="preview-pane">
+                <div class="browser-frame browser-frame-split" id="browser-frame-split">
+                    <div class="browser-topbar">
+                        <div class="browser-dots">
+                            <span class="bdot bdot-red"></span>
+                            <span class="bdot bdot-yellow"></span>
+                            <span class="bdot bdot-green"></span>
+                        </div>
+                        <div class="browser-address">
+                            <span class="addr-lock">🔒</span>
+                            <span class="addr-text" id="addr-text-split">portfolio preview</span>
+                        </div>
+                    </div>
+                    <div class="browser-viewport">
+                        <iframe id="portfolio-iframe-split" class="portfolio-iframe" sandbox="allow-scripts allow-same-origin" title="Portfolio preview"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="modal-overlay" style="display: none;">
+        <div class="modal-box" id="modal-box">
+            <div class="modal-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v4M12 17h.01"></path>
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                </svg>
+            </div>
+            <h3 class="modal-title">Apply changes to your portfolio?</h3>
+            <p class="modal-desc">This will update your generated portfolio with the code you've edited. The preview will reload with the new version.</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="modal-confirm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Yes, apply changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" style="display: none;">
+        <span class="toast-icon" id="toast-icon"></span>
+        <span class="toast-message" id="toast-message"></span>
+    </div>
+
+    <!-- Monaco Editor AMD Loader -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
 
     <script src="portfolio.js"></script>
 </body>

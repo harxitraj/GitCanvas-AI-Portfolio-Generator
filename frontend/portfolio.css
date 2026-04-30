@@ -5,17 +5,27 @@
 :root {
     --color-bg: #F0F0EC;
     --color-surface: #FFFFFF;
+    --color-surface-alt: #F7F7F5;
     --color-border: #E4E2DD;
     --color-text-primary: #1A1A1A;
     --color-text-secondary: #6B6660;
     --color-text-tertiary: #9B9590;
     --color-accent: #C8442E;
+    --color-accent-hover: #A83825;
+    --color-accent-light: #FDF0EE;
+    --color-success: #16a34a;
+    --color-success-light: #f0fdf4;
+    --color-error: #dc2626;
+    --color-error-light: #fef2f2;
 
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --toolbar-height: 56px;
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 14px;
+
+    --editor-tab-height: 40px;
+    --editor-footer-height: 52px;
 }
 
 *,
@@ -122,9 +132,29 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     color: var(--color-text-primary);
 }
 
+.toolbar-btn.active-btn {
+    background: var(--color-text-primary);
+    color: var(--color-surface);
+    border-color: var(--color-text-primary);
+}
+
+.toolbar-btn.active-btn:hover {
+    background: #2d2d2d;
+}
+
 
 /* --- Main Content --- */
 .pf-main {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    min-height: 0;
+}
+
+
+/* --- Preview Container (full-width mode) --- */
+.preview-container {
     flex: 1;
     display: flex;
     align-items: stretch;
@@ -149,12 +179,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     overflow: hidden;
 }
 
+.browser-frame-split {
+    max-width: none;
+    border-radius: var(--radius-md);
+}
+
 .browser-topbar {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 12px 16px;
-    background: #F7F7F5;
+    background: var(--color-surface-alt);
     border-bottom: 1px solid var(--color-border);
     flex-shrink: 0;
 }
@@ -255,9 +290,388 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
-/* --- Responsive --- */
+/* ============================================
+   Split-Pane Layout (Editor + Preview)
+   ============================================ */
+
+.split-pane {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    gap: 0;
+}
+
+.editor-pane {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+    border-right: 1px solid #333;
+    min-width: 0;
+}
+
+.preview-pane {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    min-width: 0;
+}
+
+
+/* --- File Tabs --- */
+.file-tabs {
+    display: flex;
+    height: var(--editor-tab-height);
+    background: #252526;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+
+.file-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 16px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #858585;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    position: relative;
+}
+
+.file-tab:hover {
+    color: #cccccc;
+    background: #2d2d2d;
+}
+
+.file-tab.active {
+    color: #ffffff;
+    background: #1e1e1e;
+    border-bottom-color: #007acc;
+}
+
+.tab-icon {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.tab-name {
+    letter-spacing: 0.01em;
+}
+
+
+/* --- Editor Container --- */
+.editor-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* --- Editor Loading State --- */
+.editor-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    gap: 16px;
+    z-index: 5;
+}
+
+.editor-loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #333;
+    border-top-color: #007acc;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.editor-loading p {
+    font-size: 0.82rem;
+    color: #858585;
+    font-weight: 500;
+}
+
+
+/* --- Editor Footer --- */
+.editor-footer {
+    height: var(--editor-footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    background: #252526;
+    border-top: 1px solid #333;
+    flex-shrink: 0;
+}
+
+.editor-footer-left,
+.editor-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.editor-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+    cursor: pointer;
+}
+
+.btn-back-preview {
+    color: #cccccc;
+    background: transparent;
+    border: 1px solid #555;
+}
+
+.btn-back-preview:hover {
+    background: #333;
+    border-color: #777;
+}
+
+.btn-discard {
+    color: #cccccc;
+    background: transparent;
+    border: 1px solid #555;
+}
+
+.btn-discard:hover:not(:disabled) {
+    background: #3d1f1f;
+    border-color: #a33;
+    color: #ff8888;
+}
+
+.btn-discard:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.btn-finalize {
+    color: #ffffff;
+    background: #007acc;
+    border: 1px solid #007acc;
+}
+
+.btn-finalize:hover:not(:disabled) {
+    background: #006bb3;
+}
+
+.btn-finalize:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: #444;
+    border-color: #444;
+}
+
+.btn-finalize.pulse {
+    animation: finalizePulse 2s infinite;
+}
+
+@keyframes finalizePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 122, 204, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(0, 122, 204, 0); }
+}
+
+
+/* ============================================
+   Confirmation Modal
+   ============================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-box {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: modalSlideUp 0.2s ease;
+    text-align: center;
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FFF7ED;
+    color: #EA580C;
+    margin-bottom: 16px;
+}
+
+.modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.modal-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 22px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+    cursor: pointer;
+}
+
+.modal-btn-cancel {
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+}
+
+.modal-btn-cancel:hover {
+    border-color: var(--color-text-tertiary);
+    color: var(--color-text-primary);
+}
+
+.modal-btn-confirm {
+    color: #fff;
+    background: var(--color-text-primary);
+    border: 1.5px solid var(--color-text-primary);
+}
+
+.modal-btn-confirm:hover {
+    background: #2d2d2d;
+}
+
+.modal-btn-confirm.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+
+/* ============================================
+   Toast Notification
+   ============================================ */
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--color-text-primary);
+    color: #fff;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    max-width: 90vw;
+    white-space: nowrap;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.toast-success {
+    background: #065f46;
+}
+
+.toast.toast-error {
+    background: #991b1b;
+}
+
+.toast-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 900px) {
+    .split-pane {
+        flex-direction: column;
+    }
+
+    .editor-pane {
+        width: 100%;
+        height: 50%;
+        border-right: none;
+        border-bottom: 1px solid #333;
+    }
+
+    .preview-pane {
+        width: 100%;
+        height: 50%;
+        padding: 8px;
+    }
+}
+
 @media (max-width: 768px) {
-    .pf-main {
+    .preview-container {
         padding: 12px;
     }
 
@@ -276,6 +690,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     .toolbar-label {
         display: none;
     }
+
+    /* Editor footer stacks on very small screens */
+    .editor-footer {
+        height: auto;
+        padding: 8px 10px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .editor-footer-left,
+    .editor-footer-right {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -283,11 +711,23 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         padding: 0 12px;
     }
 
-    .pf-main {
+    .preview-container {
         padding: 8px;
     }
 
     .browser-topbar {
         padding: 10px 12px;
+    }
+
+    .modal-box {
+        padding: 24px 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-btn {
+        width: 100%;
     }
 }

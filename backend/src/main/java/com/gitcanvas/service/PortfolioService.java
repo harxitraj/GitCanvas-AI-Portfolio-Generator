@@ -93,4 +93,30 @@ public class PortfolioService {
     public boolean hasPortfolio(String username) {
         return portfolioStore.containsKey(username);
     }
+
+    /**
+     * Returns the full PortfolioFiles object for a user.
+     * Used by the code editor to load all three files at once.
+     */
+    public PortfolioFiles getPortfolioFiles(String username) {
+        return portfolioStore.get(username);
+    }
+
+    /**
+     * Replaces the stored portfolio files with user-edited versions.
+     * Called when the user finalizes changes in the code editor.
+     *
+     * We replace the entire PortfolioFiles object atomically rather than
+     * updating individual fields — this avoids a race condition where
+     * one file is updated but another isn't if two requests come in
+     * simultaneously.
+     */
+    public void updatePortfolioFiles(String username, PortfolioFiles updatedFiles) {
+        if (!portfolioStore.containsKey(username)) {
+            throw new IllegalArgumentException("No portfolio found for user: " + username);
+        }
+
+        portfolioStore.put(username, updatedFiles);
+        log.info("Portfolio updated for: {}", username);
+    }
 }
