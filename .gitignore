@@ -41,10 +41,8 @@ package-lock.json
 .env
 *.env.local
 
-# --- Interview Prep (local only) ---
-problemsFaced.md
-
 # --- Misc ---
 *.log
 *.tmp
 *.bak
+problemsFaced.md
