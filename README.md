@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # GitCanvas
 
 **AI-Powered GitHub Activity Analyzer & Developer Portfolio Generator**
@@ -137,6 +136,3 @@ The top 5 repos by score become "Featured Projects" in the portfolio.
 ## License
 
 MIT
-=======
-# GitCanvas-AI-Portfolio-Generator
->>>>>>> 4a9a06fb176a493326bfbef008ae7949b9dfad1d
